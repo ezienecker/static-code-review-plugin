@@ -1,0 +1,43 @@
+= SpotBugs Reporter
+
+== Usage
+
+[source,bash]
+....
+mvn verify -DgitLabUrl=https://gitlab.com/ -DprojectId=${CI_PROJECT_ID} -DmergeRequestIid=${CI_MERGE_REQUEST_IID} -Dauth.token=${GITLAB_AUTH_TOKEN}
+....
+
+== Configuration
+
+=== Required
+
+|===
+|Property |Default |Description
+
+|gitLabUrl |None |The URL of the GitLab server
+|projectId |None |The project in the form of an Integer(ID) or String(path)
+|mergeRequestIid |None |The internal ID of the merge request
+3+|One of the two must be given, either the `auth.token` or the basic auth (`auth.username` & `auth.password`).
+|auth.token |None |The private token to use for access to the GitLab API
+|auth.username |None |The username for basic auth with the GitLab server.
+|auth.password |None |The password for basic auth with the GitLab server.
+
+|===
+
+=== Optional
+
+|===
+|Property |Default |Description
+
+|proxy.serverAddress |None |The URI of the proxy server.
+|proxy.username |None |The username for basic auth with the proxy server.
+|proxy.password |None |The password for basic auth with the proxy server.
+|applicationSources |`src/main/java` |Application/Library sources.
+|compiledClasses |`classes` |Compiled Application/Library sources.
+|priorityThresholdLevel |3 |It specifies the confidence/priority threshold for reporting issues. 1 = High, 2 = Normal, 3 = Low, 4 = Ignored, 5 = Experimental.
+
+|===
+
+== Goal
+
+== Releasing
