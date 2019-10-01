@@ -4,7 +4,10 @@
 
 [source,bash]
 ....
-mvn verify -DgitLabUrl=https://gitlab.com/ -DprojectId=${CI_PROJECT_ID} -DmergeRequestIid=${CI_MERGE_REQUEST_IID} -Dauth.token=${GITLAB_AUTH_TOKEN}
+mvn verify -DgitLabUrl=https://gitlab.com/  \
+    -DprojectId=$CI_PROJECT_ID  \
+    -DmergeRequestIid=$CI_MERGE_REQUEST_IID  \
+    -Dauth.token=$GITLAB_AUTH_TOKEN
 ....
 
 == Configuration
