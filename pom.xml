@@ -11,6 +11,7 @@
     <packaging>maven-plugin</packaging>
 
     <name>Helm Maven Plugin</name>
+    <description>A plugin which comments the found bugs (by spotbugs) to your merge request</description>
     <url>https://github.com/ManuZiD/spotbugs-reporter</url>
 
     <properties>
@@ -23,10 +24,11 @@
         <maven.version>3.6.0</maven.version>
         <maven-project.version>2.2.1</maven-project.version>
 
+        <gitlab4j-api.version>4.12.7</gitlab4j-api.version>
         <spotbugs.version>3.1.12</spotbugs.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <gitlab4j-api.version>4.12.7</gitlab4j-api.version>
+        <gitflow-maven-plugin.version>1.12.0</gitflow-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -138,6 +140,18 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>${gitflow-maven-plugin.version}</version>
+                <configuration>
+                    <pushRemote>false</pushRemote>
+                    <gitFlowConfig>
+                        <developmentBranch>develop</developmentBranch>
+                    </gitFlowConfig>
+                    <versionDigitToIncrement>1</versionDigitToIncrement>
+                </configuration>
             </plugin>
         </plugins>
     </build>
