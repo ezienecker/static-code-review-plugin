@@ -46,3 +46,10 @@ mvn verify -DgitLabUrl=https://gitlab.com/  \
 == Goal
 
 == Releasing
+
+Creating a new release involves the following steps:
+
+. `mvn gitflow:release-start gitflow:release-finish`
+. `git push origin master`
+. `git push --tags`
+. `git push origin develop`
