@@ -14,16 +14,16 @@ import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
 import org.apache.maven.project.MavenProject
 
-@Mojo(name = "report", defaultPhase = LifecyclePhase.VERIFY)
+@Mojo(name = "report-spotbugs", defaultPhase = LifecyclePhase.VERIFY)
 class ReportSpotBugsMojo : AbstractMojo() {
 
-    @Parameter(property = "gitLabUrl", required = true)
+    @Parameter(property = "gitLabUrl", required = false)
     private lateinit var gitLabUrl: String
 
-    @Parameter(property = "projectId", required = true)
+    @Parameter(property = "projectId", required = false)
     private lateinit var projectId: String
 
-    @Parameter(property = "mergeRequestIid", required = true)
+    @Parameter(property = "mergeRequestIid", required = false)
     private lateinit var mergeRequestIid: Integer
 
     @Parameter(property = "auth.token", required = false)
@@ -56,8 +56,16 @@ class ReportSpotBugsMojo : AbstractMojo() {
     @Parameter(defaultValue = "\${project}", readonly = true, required = true)
     private lateinit var project: MavenProject
 
+    @Parameter(property = "static-code-review.skip", defaultValue = "false")
+    private var skip: Boolean = false
+
     override fun execute() {
-        log.info("Execute spot bugs reporter.")
+        if (skip) {
+            log.info("Static Code Review has been skipped")
+            return
+        }
+
+        log.info("Execute Static Code Review Plugin.")
 
         val gitApiService = gitLabApiServiceImpl()
         val affectedFilePaths = gitApiService.getAffectedFilePaths()

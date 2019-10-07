@@ -28,6 +28,10 @@
         <spotbugs.version>3.1.12</spotbugs.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <dokka-maven-plugin.version>0.9.17</dokka-maven-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <gitflow-maven-plugin.version>1.12.0</gitflow-maven-plugin.version>
     </properties>
 
@@ -109,7 +113,7 @@
                 <version>${maven.version}</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                    <goalPrefix>review</goalPrefix>
+                    <goalPrefix>static-code-review</goalPrefix>
                 </configuration>
                 <executions>
                     <execution>
@@ -173,5 +177,101 @@
             </roles>
         </developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/ManuZiD/static-code-review-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:ManuZiD/static-code-review-plugin.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/ManuZiD/static-code-review-plugin.git</url>
+    </scm>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jetbrains.dokka</groupId>
+                        <artifactId>dokka-maven-plugin</artifactId>
+                        <version>${dokka-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>dokka</goal>
+                                    <goal>javadocJar</goal>
+                                </goals>
+                                <configuration>
+                                    <sourceDirectories>
+                                        <dir>${project.build.sourceDirectory}</dir>
+                                    </sourceDirectories>
+                                    <perPackageOptions>
+                                        <packageOptions>
+                                            <prefix>de.manuzid.staticcodereviewplugin</prefix>
+                                            <reportUndocumented>false</reportUndocumented>
+                                        </packageOptions>
+                                    </perPackageOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${nexus-staging-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>jcenter</id>
+                    <name>JCenter</name>
+                    <url>https://jcenter.bintray.com/</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
 
 </project>

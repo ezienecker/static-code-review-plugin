@@ -1,4 +1,4 @@
-= SpotBugs Reporter
+= Static Code Review Plugin
 
 This plugin asks within a merge request for the changed files and analyzes the code with the help of static code analyzer (currently SpotBugs but more are planned). The found bugs are then commented to the corresponding code location.
 
@@ -40,6 +40,7 @@ mvn verify -DgitLabUrl=https://gitlab.com/  \
 |applicationSources |`src/main/java` |Application/Library sources.
 |compiledClasses |`classes` |Compiled Application/Library sources.
 |priorityThresholdLevel |3 |It specifies the confidence/priority threshold for reporting issues. 1 = High, 2 = Normal, 3 = Low, 4 = Ignored, 5 = Experimental.
+|static-code-review.skip |false |If true, execution will be skipped entirely.
 
 |===
 
