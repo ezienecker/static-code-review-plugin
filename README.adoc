@@ -4,6 +4,31 @@ This plugin asks within a merge request for the changed files and analyzes the c
 
 == Usage
 
+Add the following to your `pom.xml`
+
+[source,xml]
+....
+<build>
+    <plugins>
+        <plugin>
+            <groupId>de.manuzid</groupId>
+            <artifactId>static-code-review-plugin</artifactId>
+            <version>1.0.0</version>
+            <executions>
+                <execution>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+....
+
+Execute the following command to run the plugin
+
 [source,bash]
 ....
 mvn verify -DgitLabUrl=https://gitlab.com/  \
