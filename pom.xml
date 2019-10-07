@@ -109,7 +109,7 @@
                 <version>${maven.version}</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                    <goalPrefix>review.reporter</goalPrefix>
+                    <goalPrefix>review</goalPrefix>
                 </configuration>
                 <executions>
                     <execution>
@@ -155,6 +155,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
 
     <developers>
         <developer>
