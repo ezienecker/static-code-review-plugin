@@ -1,7 +1,7 @@
-package de.manuzid.spotbugsreporter.service
+package de.manuzid.staticcodereviewplugin.service
 
-import de.manuzid.spotbugsreporter.model.Issue
-import de.manuzid.spotbugsreporter.model.SpotbugsConfiguration
+import de.manuzid.staticcodereviewplugin.model.Issue
+import de.manuzid.staticcodereviewplugin.model.SpotbugsConfiguration
 import edu.umd.cs.findbugs.*
 import edu.umd.cs.findbugs.config.UserPreferences
 import org.apache.maven.plugin.MojoExecutionException

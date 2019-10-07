@@ -1,13 +1,13 @@
-package de.manuzid.spotbugsreporter
+package de.manuzid.staticcodereviewplugin
 
-import de.manuzid.spotbugsreporter.model.GitLabAuthenticationConfiguration
-import de.manuzid.spotbugsreporter.model.GitLabConfiguration
-import de.manuzid.spotbugsreporter.model.ProxyConfiguration
-import de.manuzid.spotbugsreporter.model.SpotbugsConfiguration
-import de.manuzid.spotbugsreporter.service.AnalyseService
-import de.manuzid.spotbugsreporter.service.GitApiService
-import de.manuzid.spotbugsreporter.service.GitLabApiServiceImpl
-import de.manuzid.spotbugsreporter.service.SpotbugsAnalyseServiceImpl
+import de.manuzid.staticcodereviewplugin.model.GitLabAuthenticationConfiguration
+import de.manuzid.staticcodereviewplugin.model.GitLabConfiguration
+import de.manuzid.staticcodereviewplugin.model.ProxyConfiguration
+import de.manuzid.staticcodereviewplugin.model.SpotbugsConfiguration
+import de.manuzid.staticcodereviewplugin.service.AnalyseService
+import de.manuzid.staticcodereviewplugin.service.GitApiService
+import de.manuzid.staticcodereviewplugin.service.GitLabApiServiceImpl
+import de.manuzid.staticcodereviewplugin.service.SpotbugsAnalyseServiceImpl
 import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
