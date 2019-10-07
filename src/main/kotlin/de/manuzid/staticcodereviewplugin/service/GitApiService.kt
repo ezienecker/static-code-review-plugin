@@ -1,7 +1,7 @@
-package de.manuzid.spotbugsreporter.service
+package de.manuzid.staticcodereviewplugin.service
 
-import de.manuzid.spotbugsreporter.model.GitLabConfiguration
-import de.manuzid.spotbugsreporter.model.Issue
+import de.manuzid.staticcodereviewplugin.model.GitLabConfiguration
+import de.manuzid.staticcodereviewplugin.model.Issue
 import org.gitlab4j.api.GitLabApi
 import org.gitlab4j.api.ProxyClientConfig
 import org.gitlab4j.api.models.DiffRef
