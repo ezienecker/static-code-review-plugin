@@ -4,6 +4,12 @@ This plugin asks within a merge request for the changed files and analyzes the c
 
 ![License](https://img.shields.io/github/license/ManuZiD/static-code-review-plugin.png)
 
+![License](https://img.shields.io/github/license/mountainash/static-code-review-plugin.png)
+
+![License](https://img.shields.io/github/license/mountainash/static-code-review-plugin.svg)
+
+<img src="https://img.shields.io/github/license/mountainash/static-code-review-plugin.png">
+
 == Usage
 
 Add the following to your `pom.xml`
