@@ -2,7 +2,7 @@
 
 This plugin asks within a merge request for the changed files and analyzes the code with the help of static code analyzer (currently SpotBugs but more are planned). The found bugs are then commented to the corresponding code location.
 
-![License](https://img.shields.io/github/license/ManuZiD/static-code-review-plugin)
+![License](https://img.shields.io/github/license/ManuZiD/static-code-review-plugin.png)
 
 == Usage
 
