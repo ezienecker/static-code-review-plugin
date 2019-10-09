@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.manuzid.staticcodereviewplugin
 
 import de.manuzid.staticcodereviewplugin.model.GitLabAuthenticationConfiguration
@@ -8,41 +24,12 @@ import de.manuzid.staticcodereviewplugin.service.AnalyseService
 import de.manuzid.staticcodereviewplugin.service.GitApiService
 import de.manuzid.staticcodereviewplugin.service.GitLabApiServiceImpl
 import de.manuzid.staticcodereviewplugin.service.SpotbugsAnalyseServiceImpl
-import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
-import org.apache.maven.project.MavenProject
 
-@Mojo(name = "report-spotbugs", defaultPhase = LifecyclePhase.VERIFY)
-class ReportSpotBugsMojo : AbstractMojo() {
-
-    @Parameter(property = "gitLabUrl", required = false)
-    private lateinit var gitLabUrl: String
-
-    @Parameter(property = "projectId", required = false)
-    private lateinit var projectId: String
-
-    @Parameter(property = "mergeRequestIid", required = false)
-    private lateinit var mergeRequestIid: Integer
-
-    @Parameter(property = "auth.token", required = false)
-    private var authToken: String? = null
-
-    @Parameter(property = "auth.username", required = false)
-    private var authUsername: String? = null
-
-    @Parameter(property = "auth.password", required = false)
-    private var authPassword: String? = null
-
-    @Parameter(property = "proxy.serverAddress", required = false)
-    private var proxyServerAddress: String? = null
-
-    @Parameter(property = "proxy.username", required = false)
-    private var proxyUsername: String? = null
-
-    @Parameter(property = "proxy.password", required = false)
-    private var proxyPassword: String? = null
+@Mojo(name = "report", defaultPhase = LifecyclePhase.VERIFY)
+class ReportSpotBugsMojo : AbstractReportMojo() {
 
     @Parameter(property = "applicationSources", defaultValue = "src/main/java")
     private var applicationSourcePath: String = "src/main/java"
@@ -53,14 +40,8 @@ class ReportSpotBugsMojo : AbstractMojo() {
     @Parameter(property = "priorityThresholdLevel", defaultValue = "3")
     private var priorityThresholdLevel: Int = 3
 
-    @Parameter(defaultValue = "\${project}", readonly = true, required = true)
-    private lateinit var project: MavenProject
-
-    @Parameter(property = "static-code-review.skip", defaultValue = "false")
-    private var skip: Boolean = false
-
     override fun execute() {
-        if (skip) {
+        if (isAnalyzerActive()) {
             log.info("Static Code Review has been skipped")
             return
         }
@@ -91,6 +72,8 @@ class ReportSpotBugsMojo : AbstractMojo() {
         log.info("Post ${reportedIssues.size.bottles("comment", "comments")} to merge request.")
         gitApiService.commentMergeRequest(reportedIssues, mergeRequestMetaData)
     }
+
+    override fun getAnalyzer(): String = "spotbugs"
 
     private fun gitLabApiServiceImpl(): GitApiService {
         val authConfiguration = GitLabAuthenticationConfiguration(authToken, authUsername, authPassword)
