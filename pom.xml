@@ -12,7 +12,7 @@
 
     <name>Static Code Review Plugin</name>
     <description>A plugin which comments the found bugs (by static code analyzer) to your merge request</description>
-    <url>https://github.com/ManuZiD/static-code-review-plugin</url>
+    <url>https://github.com/ezienecker/static-code-review-plugin</url>
 
     <properties>
         <kotlin.version>1.3.50</kotlin.version>
@@ -169,7 +169,7 @@
 
     <developers>
         <developer>
-            <id>ManuZiD</id>
+            <id>ezienecker</id>
             <name>Emanuel Zienecker</name>
             <email>info@manuzid.de</email>
             <roles>
@@ -179,10 +179,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/ManuZiD/static-code-review-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:ManuZiD/static-code-review-plugin.git</developerConnection>
+        <connection>scm:git:git://github.com/ezienecker/static-code-review-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:ezienecker/static-code-review-plugin.git</developerConnection>
         <tag>HEAD</tag>
-        <url>https://github.com/ManuZiD/static-code-review-plugin.git</url>
+        <url>https://github.com/ezienecker/static-code-review-plugin.git</url>
     </scm>
 
     <profiles>
