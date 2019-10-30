@@ -15,7 +15,7 @@
     <url>https://github.com/ezienecker/static-code-review-plugin</url>
 
     <properties>
-        <kotlin.version>1.3.50</kotlin.version>
+        <kotlin.version>1.3.61</kotlin.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -33,6 +33,7 @@
         <dokka-maven-plugin.version>0.9.17</dokka-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <gitflow-maven-plugin.version>1.12.0</gitflow-maven-plugin.version>
+        <detekt.version>1.1.1</detekt.version>
     </properties>
 
     <dependencies>
@@ -74,6 +75,23 @@
             <artifactId>spotbugs</artifactId>
             <version>${spotbugs.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.gitlab.arturbosch.detekt</groupId>
+            <artifactId>detekt-core</artifactId>
+            <version>${detekt.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jcommander</artifactId>
+                    <groupId>com.beust</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.gitlab.arturbosch.detekt</groupId>
+            <artifactId>detekt-rules</artifactId>
+            <version>${detekt.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.gitlab4j</groupId>
             <artifactId>gitlab4j-api</artifactId>

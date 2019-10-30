@@ -41,6 +41,30 @@ mvn verify -DgitLabUrl=https://gitlab.com/  \
     -Dauth.token=$GITLAB_AUTH_TOKEN
 ....
 
+To exclude analyzer use the `exclusion` tag
+
+[source,xml]
+....
+<plugin>
+    <groupId>de.manuzid</groupId>
+    <artifactId>static-code-review-plugin</artifactId>
+    <version>1.0.0</version>
+    <configuration>
+        <exclusions>
+            <exclusion>spotbugs</exclusion>
+        </exclusions>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>verify</phase>
+            <goals>
+                <goal>report-detekt</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+....
+
 == Configuration
 
 === Required
@@ -48,9 +72,11 @@ mvn verify -DgitLabUrl=https://gitlab.com/  \
 |===
 |Property |Default |Description
 
+|exclusion |None |Analyzer that should be excluded. Valid values: `spotbugs`, `detekt`
 |gitLabUrl |None |The URL of the GitLab server
 |projectId |None |The project in the form of an Integer(ID) or String(path)
 |mergeRequestIid |None |The internal ID of the merge request
+|static-code-review.skip |false |If true, execution will be skipped entirely.
 3+|One of the two must be given, either the `auth.token` or the basic auth (`auth.username` & `auth.password`).
 |auth.token |None |The private token to use for access to the GitLab API
 |auth.username |None |The username for basic auth with the GitLab server.
@@ -67,9 +93,10 @@ mvn verify -DgitLabUrl=https://gitlab.com/  \
 |proxy.username |None |The username for basic auth with the proxy server.
 |proxy.password |None |The password for basic auth with the proxy server.
 |applicationSources |`src/main/java` |Application/Library sources.
+|exclusions |empty list |A list of strings containing the analyzers to be excluded.
+3+|SpotBugs Settings
 |compiledClasses |`classes` |Compiled Application/Library sources.
 |priorityThresholdLevel |3 |It specifies the confidence/priority threshold for reporting issues. 1 = High, 2 = Normal, 3 = Low, 4 = Ignored, 5 = Experimental.
-|exclusions |empty list |A list of strings containing the analyzers to be excluded.
 
 |===
 
