@@ -14,35 +14,70 @@
  * limitations under the License.
  */
 
-package de.manuzid.staticcodereviewplugin
+package de.manuzid.staticcodereviewplugin.mojo
 
 import de.manuzid.staticcodereviewplugin.model.GitLabAuthenticationConfiguration
 import de.manuzid.staticcodereviewplugin.model.GitLabConfiguration
+import de.manuzid.staticcodereviewplugin.model.Issue
 import de.manuzid.staticcodereviewplugin.model.ProxyConfiguration
-import de.manuzid.staticcodereviewplugin.model.SpotbugsConfiguration
-import de.manuzid.staticcodereviewplugin.service.AnalyseService
 import de.manuzid.staticcodereviewplugin.service.GitApiService
 import de.manuzid.staticcodereviewplugin.service.GitLabApiServiceImpl
-import de.manuzid.staticcodereviewplugin.service.SpotbugsAnalyseServiceImpl
-import org.apache.maven.plugins.annotations.LifecyclePhase
-import org.apache.maven.plugins.annotations.Mojo
+import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.plugins.annotations.Parameter
+import org.apache.maven.project.MavenProject
 
-@Mojo(name = "report", defaultPhase = LifecyclePhase.VERIFY)
-class ReportSpotBugsMojo : AbstractReportMojo() {
+abstract class AbstractReportMojo : AbstractMojo() {
+
+    @Parameter(property = "gitLabUrl", required = false)
+    protected lateinit var gitLabUrl: String
+
+    @Parameter(property = "projectId", required = false)
+    protected lateinit var projectId: String
+
+    @Parameter(property = "mergeRequestIid", required = false)
+    protected lateinit var mergeRequestIid: Integer
+
+    @Parameter(property = "auth.token", required = false)
+    protected var authToken: String? = null
+
+    @Parameter(property = "auth.username", required = false)
+    protected var authUsername: String? = null
+
+    @Parameter(property = "auth.password", required = false)
+    protected var authPassword: String? = null
+
+    @Parameter(property = "proxy.serverAddress", required = false)
+    protected var proxyServerAddress: String? = null
+
+    @Parameter(property = "proxy.username", required = false)
+    protected var proxyUsername: String? = null
+
+    @Parameter(property = "proxy.password", required = false)
+    protected var proxyPassword: String? = null
+
+    @Parameter(defaultValue = "\${project}", readonly = true, required = true)
+    protected lateinit var project: MavenProject
 
     @Parameter(property = "applicationSources", defaultValue = "src/main/java")
-    private var applicationSourcePath: String = "src/main/java"
+    protected var applicationSourcePath: String = "src/main/java"
 
     @Parameter(property = "compiledClasses", defaultValue = "classes")
-    private var compiledClassPath: String = "classes"
+    protected var compiledClassPath: String = "classes"
 
-    @Parameter(property = "priorityThresholdLevel", defaultValue = "3")
-    private var priorityThresholdLevel: Int = 3
+    @Parameter(property = "exclusions", required = false)
+    private val exclusions: List<String> = ArrayList()
+
+    @Parameter(property = "static-code-review.skip", defaultValue = "false")
+    private var skip: Boolean = false
 
     override fun execute() {
-        if (isAnalyzerActive()) {
+        if (skip) {
             log.info("Static Code Review has been skipped")
+            return
+        }
+
+        if (isAnalyzerActive()) {
+            log.info("Analyzer ${getAnalyzer()} is inactive.")
             return
         }
 
@@ -60,9 +95,7 @@ class ReportSpotBugsMojo : AbstractReportMojo() {
         log.debug("Obtain following ${affectedFilePaths.size.bottles("path", "paths")} from remote: $affectedFilePaths.")
         log.info("Start analysing ${affectedFilePaths.size.bottles("file", "files")}.")
 
-        val analyseService = spotbugsAnalyseServiceImpl(affectedFilePaths)
-        analyseService.analyse()
-        val reportedIssues = analyseService.getReportedIssues()
+        val reportedIssues = getIssuesFromAnalyzer(affectedFilePaths)
 
         if (reportedIssues.isEmpty()) {
             log.info("No bugs found.")
@@ -73,7 +106,9 @@ class ReportSpotBugsMojo : AbstractReportMojo() {
         gitApiService.commentMergeRequest(reportedIssues, mergeRequestMetaData)
     }
 
-    override fun getAnalyzer(): String = "spotbugs"
+    protected abstract fun getAnalyzer(): String
+
+    protected abstract fun getIssuesFromAnalyzer(affectedFilePaths: List<String>): List<Issue>
 
     private fun gitLabApiServiceImpl(): GitApiService {
         val authConfiguration = GitLabAuthenticationConfiguration(authToken, authUsername, authPassword)
@@ -84,18 +119,12 @@ class ReportSpotBugsMojo : AbstractReportMojo() {
         return GitLabApiServiceImpl(gitLabConfiguration)
     }
 
-    private fun spotbugsAnalyseServiceImpl(filePaths: List<String>): AnalyseService {
-        val spotbugsConfiguration = SpotbugsConfiguration(project.artifactId, filePaths, priorityThresholdLevel,
-                project.build.directory, applicationSourcePath.removeSurrounding("/"),
-                compiledClassPath.removeSurrounding("/"))
-        return SpotbugsAnalyseServiceImpl(spotbugsConfiguration)
-    }
+    private fun isAnalyzerActive(): Boolean = getAnalyzer() in exclusions
 
-    private fun Int.bottles(singular: String, plural: String): String = when (this) {
-        0 -> "no $singular"
-        1 -> "1 $singular"
-        else -> "$this $plural"
-    }
+}
 
-    private fun String.removeSurrounding(sign: String): String = this.removePrefix(sign).removeSuffix(sign)
+private fun Int.bottles(singular: String, plural: String): String = when (this) {
+    0 -> "no $singular"
+    1 -> "1 $singular"
+    else -> "$this $plural"
 }
