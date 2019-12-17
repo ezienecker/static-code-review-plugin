@@ -72,7 +72,7 @@ abstract class AbstractReportMojo : AbstractMojo() {
 
     override fun execute() {
         if (skip) {
-            log.info("Static Code Review has been skipped")
+            log.info("Static Code Review has been skipped.")
             return
         }
 

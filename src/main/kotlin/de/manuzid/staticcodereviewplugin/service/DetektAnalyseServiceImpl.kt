@@ -32,7 +32,7 @@ class DetektAnalyseServiceImpl(detektConfiguration: DetektConfiguration) : Analy
 
     init {
         val filePaths = detektConfiguration.filePaths.map { Paths.get(it) }.filter { !it.endsWith(".kt") }.toList()
-        val processingSettings = ProcessingSettings(filePaths, debug = true)
+        val processingSettings = ProcessingSettings(filePaths)
         detektFacade = DetektFacade.create(processingSettings)
     }
 

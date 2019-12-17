@@ -17,11 +17,6 @@
 package de.manuzid.staticcodereviewplugin.service
 
 import de.manuzid.staticcodereviewplugin.model.Issue
-import de.manuzid.staticcodereviewplugin.model.SpotbugsConfiguration
-import edu.umd.cs.findbugs.*
-import edu.umd.cs.findbugs.config.UserPreferences
-import org.apache.maven.plugin.MojoExecutionException
-import java.io.IOException
 
 interface AnalyseService {
 

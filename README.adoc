@@ -4,7 +4,7 @@ image::https://img.shields.io/github/license/ezienecker/static-code-review-plugi
 
 image::https://travis-ci.com/ezienecker/static-code-review-plugin.svg?branch=develop["Build Status", link="https://travis-ci.com/ezienecker/static-code-review-plugin"]
 
-This plugin asks within a merge request for the changed files and analyzes the code with the help of static code analyzer (currently SpotBugs but more are planned). The found bugs are then commented to the corresponding code location.
+This plugin asks within a merge request for the changed files and analyzes the code with the help of static code analyzer (currently https://spotbugs.github.io/[SpotBugs] and https://arturbosch.github.io/detekt/[Detekt] but more are planned). The found bugs are then commented to the corresponding code location.
 
 == Usage
 
@@ -72,7 +72,6 @@ To exclude analyzer use the `exclusion` tag
 |===
 |Property |Default |Description
 
-|exclusion |None |Analyzer that should be excluded. Valid values: `spotbugs`, `detekt`
 |gitLabUrl |None |The URL of the GitLab server
 |projectId |None |The project in the form of an Integer(ID) or String(path)
 |mergeRequestIid |None |The internal ID of the merge request
@@ -94,6 +93,7 @@ To exclude analyzer use the `exclusion` tag
 |proxy.password |None |The password for basic auth with the proxy server.
 |applicationSources |`src/main/java` |Application/Library sources.
 |exclusions |empty list |A list of strings containing the analyzers to be excluded.
+|exclusion |None |Analyzer that should be excluded. Valid values: `spotbugs`, `detekt`
 3+|SpotBugs Settings
 |compiledClasses |`classes` |Compiled Application/Library sources.
 |priorityThresholdLevel |3 |It specifies the confidence/priority threshold for reporting issues. 1 = High, 2 = Normal, 3 = Low, 4 = Ignored, 5 = Experimental.
