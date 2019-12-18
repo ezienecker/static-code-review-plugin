@@ -1,21 +1,32 @@
-package de.manuzid.spotbugsreporter.service
+/*
+ * Copyright 2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import de.manuzid.spotbugsreporter.model.Issue
-import de.manuzid.spotbugsreporter.model.SpotbugsConfiguration
+package de.manuzid.staticcodereviewplugin.service
+
+import de.manuzid.staticcodereviewplugin.model.Issue
+import de.manuzid.staticcodereviewplugin.model.SpotbugsConfiguration
 import edu.umd.cs.findbugs.*
 import edu.umd.cs.findbugs.config.UserPreferences
 import org.apache.maven.plugin.MojoExecutionException
+import org.slf4j.LoggerFactory
 import java.io.IOException
 
-interface AnalyseService {
-
-    fun analyse()
-
-    fun getReportedIssues(): List<Issue>
-
-}
-
 class SpotbugsAnalyseServiceImpl(private val spotbugsConfiguration: SpotbugsConfiguration) : AnalyseService {
+
+    val logger = LoggerFactory.getLogger(SpotbugsAnalyseServiceImpl::class.java)
 
     private val engine = FindBugs2()
     private val bugReporter: BugCollectionBugReporter
@@ -42,19 +53,21 @@ class SpotbugsAnalyseServiceImpl(private val spotbugsConfiguration: SpotbugsConf
     }
 
 
-    override fun analyse() {
+    override fun analyse(): AnalyseService {
         try {
             engine.execute()
         } catch (e: IOException) {
-            throw MojoExecutionException("Analysis failed.", e)
+            logger.error("Analysis failed.", e)
         } catch (e: InterruptedException) {
-            throw MojoExecutionException("Analysis was interrupted.", e)
+            logger.error("Analysis was interrupted.", e)
         }
 
         if (bugReporter.queuedErrors.isNotEmpty()) {
             bugReporter.reportQueuedErrors()
-            throw MojoExecutionException("Analysis failed. Check stderr for detail.")
+            logger.error("Analysis failed. Check stderr for detail.")
         }
+
+        return this
     }
 
     override fun getReportedIssues(): List<Issue> =
@@ -68,6 +81,7 @@ class SpotbugsAnalyseServiceImpl(private val spotbugsConfiguration: SpotbugsConf
 
     private fun transformApplicationPathsToAbsoluteClassPaths(affectedFilePaths: List<String>): List<String> =
             affectedFilePaths
+                    .filter { !it.endsWith(".java") }
                     .map { path -> path.replace(spotbugsConfiguration.applicationSourcePath, spotbugsConfiguration.absolutePath + '/' + spotbugsConfiguration.compiledClassPath) }
                     .map { path -> path.replace(".java", ".class") }
                     .toList()
