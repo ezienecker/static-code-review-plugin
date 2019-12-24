@@ -1,8 +1,8 @@
 = Static Code Review Plugin
 
 image::https://img.shields.io/github/license/ezienecker/static-code-review-plugin.svg[License]
-
 image::https://travis-ci.com/ezienecker/static-code-review-plugin.svg?branch=develop["Build Status", link="https://travis-ci.com/ezienecker/static-code-review-plugin"]
+image::https://img.shields.io/maven-central/v/de.manuzid/static-code-review-plugin.svg?label=Maven%20Central["Maven Central", link="https://search.maven.org/search?q=g:%22de.manuzid%22%20AND%20a:%22static-code-review-plugin%22"]
 
 This plugin asks within a merge request for the changed files and analyzes the code with the help of static code analyzer (currently https://spotbugs.github.io/[SpotBugs] and https://arturbosch.github.io/detekt/[Detekt] but more are planned). The found bugs are then commented to the corresponding code location.
 
