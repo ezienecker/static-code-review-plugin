@@ -43,9 +43,14 @@ class GitLabApiServiceImpl(gitLabConfiguration: GitLabConfiguration) : GitApiSer
     private val mergeRequestIid: Int = gitLabConfiguration.mergeRequestIid
 
     init {
-        if (!gitLabConfiguration.authentication.token.isNullOrBlank()) {
+        gitLabApi = if (gitLabConfiguration.authentication.token.isNullOrBlank()) {
+            require(!gitLabConfiguration.authentication.username.isNullOrBlank()) { "The GitLab username must be present." }
+            require(!gitLabConfiguration.authentication.password.isNullOrBlank()) { "The GitLab password must be present." }
 
-            gitLabApi = if (gitLabConfiguration.proxyConfiguration == null) {
+            GitLabApi(gitLabConfiguration.gitLabUrl, gitLabConfiguration.authentication.username,
+                    gitLabConfiguration.authentication.password)
+        } else {
+            if (gitLabConfiguration.proxyConfiguration == null) {
                 GitLabApi(gitLabConfiguration.gitLabUrl, gitLabConfiguration.authentication.token)
             } else {
                 GitLabApi(gitLabConfiguration.gitLabUrl, gitLabConfiguration.authentication.token, null,
@@ -53,15 +58,7 @@ class GitLabApiServiceImpl(gitLabConfiguration: GitLabConfiguration) : GitApiSer
                                 gitLabConfiguration.proxyConfiguration.userName,
                                 gitLabConfiguration.proxyConfiguration.password))
             }
-
-        } else {
-            require(!gitLabConfiguration.authentication.username.isNullOrBlank()) { "The GitLab username must be present." }
-            require(!gitLabConfiguration.authentication.password.isNullOrBlank()) { "The GitLab password must be present." }
-
-            gitLabApi = GitLabApi(gitLabConfiguration.gitLabUrl, gitLabConfiguration.authentication.username,
-                    gitLabConfiguration.authentication.password)
         }
-
     }
 
     override fun getAffectedFilePaths(): List<String> {
