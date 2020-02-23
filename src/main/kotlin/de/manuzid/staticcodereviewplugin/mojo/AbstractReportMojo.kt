@@ -81,21 +81,6 @@ abstract class AbstractReportMojo : AbstractMojo() {
             return
         }
 
-        if (log.isDebugEnabled) {
-            log.debug("""
-                Static Code Review Plugin Settings:
-                gitLab url: $gitLabUrl
-                project Id: $projectId
-                merge request Iid: $mergeRequestIid
-                ${if (authToken == null) "authentication token is not set" else "authentication token is set"}
-                ${if (authUsername == null) "authentication user name is not set" else "authentication user name is set"}
-                ${if (authPassword == null) "authentication password is not set" else "authentication password is set"}
-                application source path: $applicationSourcePath
-                compiled classes: $compiledClassPath
-                exclusions: $exclusions
-            """.trimIndent())
-        }
-
         log.info("Execute Static Code Review Plugin.")
 
         val gitApiService = gitLabApiServiceImpl()
