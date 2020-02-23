@@ -25,7 +25,7 @@ import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import java.nio.file.Paths
 
-class DetektAnalyseServiceImpl(detektConfiguration: DetektConfiguration) : AnalyseService {
+class DetektAnalyseServiceImpl(val detektConfiguration: DetektConfiguration) : AnalyseService {
 
     private val detektFacade: DetektFacade
     private lateinit var detektion: Detektion
@@ -46,7 +46,10 @@ class DetektAnalyseServiceImpl(detektConfiguration: DetektConfiguration) : Analy
 
     private fun transformFindingsToIssueList(findings: Map.Entry<RuleSetId, List<Finding>>): List<Issue> =
             findings.value.map {
-                Issue(it.entity.location.file, it.entity.location.source.line, it.messageOrDescription())
+                Issue(transformPath(it.entity.location.file), it.entity.location.source.line, it.messageOrDescription())
             }.toList()
+
+    private fun transformPath(filePath: String): String =
+            detektConfiguration.applicationSourcePath + filePath.substringAfter(detektConfiguration.applicationSourcePath)
 
 }
