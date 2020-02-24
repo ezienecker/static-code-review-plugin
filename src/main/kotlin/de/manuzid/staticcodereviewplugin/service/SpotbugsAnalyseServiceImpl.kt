@@ -81,7 +81,7 @@ class SpotbugsAnalyseServiceImpl(private val spotbugsConfiguration: SpotbugsConf
 
     private fun transformApplicationPathsToAbsoluteClassPaths(affectedFilePaths: List<String>): List<String> =
             affectedFilePaths
-                    .filter { !it.endsWith(".java") }
+                    .filter { it.endsWith(".java") }
                     .map { path -> path.replace(spotbugsConfiguration.applicationSourcePath, spotbugsConfiguration.absolutePath + '/' + spotbugsConfiguration.compiledClassPath) }
                     .map { path -> path.replace(".java", ".class") }
                     .toList()
