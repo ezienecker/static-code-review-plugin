@@ -20,13 +20,12 @@ import de.manuzid.staticcodereviewplugin.model.Issue
 import de.manuzid.staticcodereviewplugin.model.SpotbugsConfiguration
 import edu.umd.cs.findbugs.*
 import edu.umd.cs.findbugs.config.UserPreferences
-import org.apache.maven.plugin.MojoExecutionException
 import org.slf4j.LoggerFactory
 import java.io.IOException
 
 class SpotbugsAnalyseServiceImpl(private val spotbugsConfiguration: SpotbugsConfiguration) : AnalyseService {
 
-    val logger = LoggerFactory.getLogger(SpotbugsAnalyseServiceImpl::class.java)
+    private val logger = LoggerFactory.getLogger(SpotbugsAnalyseServiceImpl::class.java)
 
     private val engine = FindBugs2()
     private val bugReporter: BugCollectionBugReporter

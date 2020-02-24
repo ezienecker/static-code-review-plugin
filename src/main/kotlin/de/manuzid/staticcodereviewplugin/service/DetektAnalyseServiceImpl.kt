@@ -25,7 +25,7 @@ import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import java.nio.file.Paths
 
-class DetektAnalyseServiceImpl(val detektConfiguration: DetektConfiguration) : AnalyseService {
+class DetektAnalyseServiceImpl(private val detektConfiguration: DetektConfiguration) : AnalyseService {
 
     private val detektFacade: DetektFacade
     private lateinit var detektion: Detektion
