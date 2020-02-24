@@ -106,7 +106,9 @@ To exclude analyzer use the `exclusion` tag
 
 Used to run static code review plugin
 
-== Troubleshooting
+== Hints
+
+* Configuration Output
 
 To be able to check at runtime how the plugin is configured, you need to run the maven command with debug output (`-X`).
 
@@ -127,7 +129,7 @@ you should see the following output.
 [DEBUG]   (f) applicationSourcePath = src/main/kotlin
 [DEBUG]   (f) authToken = <api-token>
 [DEBUG]   (f) compiledClassPath = classes
-[DEBUG]   (f) exclusions = [spotbugs]
+[DEBUG]   (f) exclusions = [detekt]
 [DEBUG]   (f) gitLabUrl = https://gitlab.com/
 [DEBUG]   (f) mergeRequestIid = 1
 [DEBUG]   (f) project = MavenProject: de.manuzid:static-code-review-plugin-sample-kotlin:1.0.0 @ /Users/manuzid/public-projects/static-code-review-plugin-sample/static-code-review-plugin-sample-kotlin/pom.xml
@@ -135,6 +137,11 @@ you should see the following output.
 [DEBUG]   (f) skip = false
 [DEBUG] -- end configuration --
 ....
+
+* Detekt Configuration
+
+In order to resolve the path to the file to be commented on correctly, it is mandatory that the `applicationSources` is
+specified when analyzing Kotlin files.
 
 == Releasing
 
