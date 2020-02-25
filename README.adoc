@@ -106,6 +106,43 @@ To exclude analyzer use the `exclusion` tag
 
 Used to run static code review plugin
 
+== Hints
+
+* Configuration Output
+
+To be able to check at runtime how the plugin is configured, you need to run the maven command with debug output (`-X`).
+
+[source,bash]
+....
+mvn verify -X -DgitLabUrl=https://gitlab.com/  \
+    -DprojectId=$CI_PROJECT_ID  \
+    -DmergeRequestIid=$CI_MERGE_REQUEST_IID  \
+    -Dauth.token=$GITLAB_AUTH_TOKEN
+....
+
+Then look for the following line `[DEBUG] Configuring mojo 'de.manuzid:static-code-review-plugin` and
+you should see the following output.
+
+[source,bash]
+....
+[DEBUG] Configuring mojo 'de.manuzid:static-code-review-plugin:1.1.0:report-detekt' with basic configurator -->
+[DEBUG]   (f) applicationSourcePath = src/main/kotlin
+[DEBUG]   (f) authToken = <api-token>
+[DEBUG]   (f) compiledClassPath = classes
+[DEBUG]   (f) exclusions = [detekt]
+[DEBUG]   (f) gitLabUrl = https://gitlab.com/
+[DEBUG]   (f) mergeRequestIid = 1
+[DEBUG]   (f) project = MavenProject: de.manuzid:static-code-review-plugin-sample-kotlin:1.0.0 @ /Users/manuzid/public-projects/static-code-review-plugin-sample/static-code-review-plugin-sample-kotlin/pom.xml
+[DEBUG]   (f) projectId = 17068115
+[DEBUG]   (f) skip = false
+[DEBUG] -- end configuration --
+....
+
+* Detekt Configuration
+
+In order to resolve the path to the file to be commented on correctly, it is mandatory that the `applicationSources` is
+specified when analyzing Kotlin files.
+
 == Releasing
 
 Creating a new release involves the following steps:

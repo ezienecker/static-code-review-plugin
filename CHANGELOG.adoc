@@ -1,3 +1,25 @@
 = Changelog
 
+== Unreleased
+
+== Version 1.1.0
+
+* Update spotbugs to 4.0.0 and fix logical expression in SpotbugsAnalyseService
+* Remove print out plugin configuration and add hint section
+* Fix file path coming from detekt plugin to fit with git api merge request api
+
+== Version 1.0.2
+
+* Update gitlab4j version to `4.14.17
+
+== Version 1.0.1
+
+* Add debug output to print out the plugin configuration
+
 == Version 1.0.0
+
+* Abstract report mojo to support several static analyser
+* Add possibility to skip execution
+* Add plugin description, improve readme
+* Add GitLabConfiguration, SpotbugsConfiguration, GitApiService and AnalyseService
+* Setup project

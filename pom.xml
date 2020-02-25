@@ -7,7 +7,7 @@
 
     <groupId>de.manuzid</groupId>
     <artifactId>static-code-review-plugin</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
     <packaging>maven-plugin</packaging>
 
     <name>Static Code Review Plugin</name>
@@ -25,7 +25,7 @@
         <maven-project.version>2.2.1</maven-project.version>
 
         <gitlab4j-api.version>4.14.17</gitlab4j-api.version>
-        <spotbugs.version>3.1.12</spotbugs.version>
+        <spotbugs.version>4.0.0</spotbugs.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>

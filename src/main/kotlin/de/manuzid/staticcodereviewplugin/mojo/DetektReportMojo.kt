@@ -32,6 +32,6 @@ class DetektReportMojo : AbstractReportMojo() {
             detektAnalyseServiceImpl(affectedFilePaths).analyse().getReportedIssues()
 
     private fun detektAnalyseServiceImpl(filePaths: List<String>): AnalyseService =
-            DetektAnalyseServiceImpl(DetektConfiguration(filePaths))
+            DetektAnalyseServiceImpl(DetektConfiguration(filePaths, applicationSourcePath.removeSurrounding("/")))
 
 }
