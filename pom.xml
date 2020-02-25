@@ -7,7 +7,7 @@
 
     <groupId>de.manuzid</groupId>
     <artifactId>static-code-review-plugin</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>maven-plugin</packaging>
 
     <name>Static Code Review Plugin</name>
