@@ -65,6 +65,11 @@ To exclude analyzer use the `exclusion` tag
 </plugin>
 ....
 
+=== Samples
+
+* https://gitlab.com/manuzid/static-code-review-plugin-sample-java[Java Sample]
+* https://gitlab.com/manuzid/static-code-review-plugin-sample-kotlin[Kotlin Sample]
+
 == Configuration
 
 === Required
