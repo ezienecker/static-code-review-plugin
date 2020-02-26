@@ -77,6 +77,7 @@ To exclude analyzer use the `exclusion` tag
 |mergeRequestIid |None |The internal ID of the merge request
 |static-code-review.skip |false |If true, execution will be skipped entirely.
 3+|One of the two must be given, either the `auth.token` or the basic auth (`auth.username` & `auth.password`).
+Note that none of them must be protected, otherwise they cannot be read by the plugin.
 |auth.token |None |The private token to use for access to the GitLab API
 |auth.username |None |The username for basic auth with the GitLab server.
 |auth.password |None |The password for basic auth with the GitLab server.
