@@ -17,7 +17,7 @@ Add the following to your `pom.xml`
         <plugin>
             <groupId>de.manuzid</groupId>
             <artifactId>static-code-review-plugin</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
             <executions>
                 <execution>
                     <phase>verify</phase>
@@ -48,7 +48,7 @@ To exclude analyzer use the `exclusion` tag
 <plugin>
     <groupId>de.manuzid</groupId>
     <artifactId>static-code-review-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <configuration>
         <exclusions>
             <exclusion>spotbugs</exclusion>
