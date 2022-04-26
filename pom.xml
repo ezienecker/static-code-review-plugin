@@ -33,7 +33,7 @@
         <dokka-maven-plugin.version>0.9.17</dokka-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <gitflow-maven-plugin.version>1.12.0</gitflow-maven-plugin.version>
-        <detekt.version>1.1.1</detekt.version>
+        <detekt.version>1.20.0</detekt.version>
     </properties>
 
     <dependencies>
