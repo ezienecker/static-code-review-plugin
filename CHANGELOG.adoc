@@ -1,6 +1,9 @@
 = Changelog
 
-== Unreleased
+== Version 2.0.0
+
+* Update dependencies to fix CVEs
+* Add support for GitHub
 
 == Version 1.1.0
 
