@@ -35,8 +35,7 @@ Execute the following command to run the plugin
 
 [source,bash]
 ....
-mvn verify -DgitUrl=https://gitlab.com/  \
-    -DprojectId=$CI_PROJECT_ID  \
+mvn verify -DprojectId=$CI_PROJECT_ID  \
     -DmergeRequestIid=$CI_MERGE_REQUEST_IID  \
     -Dauth.token=$GITLAB_AUTH_TOKEN
 ....
@@ -77,7 +76,7 @@ To exclude analyzer use the `exclusion` tag
 |===
 |Property |Default |Description
 
-|gitUrl |None |The URL of the GitLab server
+|gitUrl |If GitHub is activated: `https://api.github.com`, otherwise `https://gitlab.com/` |The URL of the GitLab server
 3+|One of the two must be given, either the `projectId` or `repository`
 This depends on whether GitLab or GitHub is selected as the Git server.
 GitLab needs the `projectId` and GitHub the `repository` name.
@@ -127,8 +126,7 @@ To be able to check at runtime how the plugin is configured, you need to run the
 
 [source,bash]
 ....
-mvn verify -X -DgitUrl=https://gitlab.com/  \
-    -DprojectId=$CI_PROJECT_ID  \
+mvn verify -X -DprojectId=$CI_PROJECT_ID  \
     -DmergeRequestIid=$CI_MERGE_REQUEST_IID  \
     -Dauth.token=$GITLAB_AUTH_TOKEN
 ....

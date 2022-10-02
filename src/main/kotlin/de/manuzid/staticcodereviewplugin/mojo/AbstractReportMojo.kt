@@ -30,7 +30,7 @@ import org.apache.maven.project.MavenProject
 abstract class AbstractReportMojo : AbstractMojo() {
 
     @Parameter(property = "gitUrl", required = false)
-    protected lateinit var gitUrl: String
+    protected var gitUrl: String? = null
 
     @Parameter(property = "projectId", required = false)
     protected var projectId: String? = null
@@ -134,11 +134,17 @@ abstract class AbstractReportMojo : AbstractMojo() {
         if (repository.isNullOrEmpty()) {
             throw IllegalArgumentException("Repository must not be null or empty.")
         }
+        if (gitUrl.isNullOrEmpty()) {
+            gitUrl = "https://api.github.com"
+        }
         gitHubApiServiceImpl()
     } else {
         log.debug("Static Code Plugin is configured for GitLab.")
         if (projectId.isNullOrEmpty()) {
             throw IllegalArgumentException("Project ID must not be null or empty.")
+        }
+        if (gitUrl.isNullOrEmpty()) {
+            gitUrl = "https://gitlab.com/"
         }
         gitLabApiServiceImpl()
     }
@@ -147,7 +153,7 @@ abstract class AbstractReportMojo : AbstractMojo() {
         val authConfiguration = GitAuthenticationConfiguration(authToken, authUsername, authPassword)
         val proxyConfiguration = ProxyConfiguration(proxyServerAddress, proxyUsername, proxyPassword)
         val gitConfiguration = GitConfiguration(
-            gitUrl, authConfiguration, projectId, repository, mergeRequestIid!!,
+            gitUrl!!, authConfiguration, projectId, repository, mergeRequestIid!!,
             proxyConfiguration
         )
 
@@ -158,7 +164,7 @@ abstract class AbstractReportMojo : AbstractMojo() {
         val authConfiguration = GitAuthenticationConfiguration(authToken, authUsername, authPassword)
         val proxyConfiguration = ProxyConfiguration(proxyServerAddress, proxyUsername, proxyPassword)
         val gitConfiguration = GitConfiguration(
-            gitUrl, authConfiguration, projectId, repository, mergeRequestIid!!,
+            gitUrl!!, authConfiguration, projectId, repository, mergeRequestIid!!,
             proxyConfiguration
         )
 
