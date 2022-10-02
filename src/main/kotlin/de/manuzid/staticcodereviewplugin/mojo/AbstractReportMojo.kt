@@ -16,8 +16,8 @@
 
 package de.manuzid.staticcodereviewplugin.mojo
 
-import de.manuzid.staticcodereviewplugin.model.GitLabAuthenticationConfiguration
-import de.manuzid.staticcodereviewplugin.model.GitLabConfiguration
+import de.manuzid.staticcodereviewplugin.model.GitAuthenticationConfiguration
+import de.manuzid.staticcodereviewplugin.model.GitConfiguration
 import de.manuzid.staticcodereviewplugin.model.Issue
 import de.manuzid.staticcodereviewplugin.model.ProxyConfiguration
 import de.manuzid.staticcodereviewplugin.service.GitApiService
@@ -116,12 +116,12 @@ abstract class AbstractReportMojo : AbstractMojo() {
     protected abstract fun getIssuesFromAnalyzer(affectedFilePaths: List<String>): List<Issue>
 
     private fun gitLabApiServiceImpl(): GitApiService {
-        val authConfiguration = GitLabAuthenticationConfiguration(authToken, authUsername, authPassword)
+        val authConfiguration = GitAuthenticationConfiguration(authToken, authUsername, authPassword)
         val proxyConfiguration = ProxyConfiguration(proxyServerAddress, proxyUsername, proxyPassword)
-        val gitLabConfiguration = GitLabConfiguration(gitLabUrl, authConfiguration, projectId, mergeRequestIid!!,
+        val gitConfiguration = GitConfiguration(gitLabUrl, authConfiguration, projectId, mergeRequestIid!!,
                 proxyConfiguration)
 
-        return GitLabApiServiceImpl(gitLabConfiguration)
+        return GitLabApiServiceImpl(gitConfiguration)
     }
 
     private fun isAnalyzerActive(): Boolean = getAnalyzer() in exclusions
