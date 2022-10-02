@@ -78,9 +78,16 @@ To exclude analyzer use the `exclusion` tag
 |Property |Default |Description
 
 |gitUrl |None |The URL of the GitLab server
+3+|One of the two must be given, either the `projectId` or `repository`
+This depends on whether GitLab or GitHub is selected as the Git server.
+GitLab needs the `projectId` and GitHub the `repository` name.
 |projectId |None |The project in the form of an Integer(ID) or String(path)
+|repository |None |Is a combination of `owner` und `repository`.
+`Owner` is the account owner of the repository. The name is not case-sensitive.
+`Repository` is the name of the repository. The name is not case-sensitive.
 |mergeRequestIid |None |The internal ID of the merge request
 |static-code-review.skip |false |If true, execution will be skipped entirely.
+|isGitHub |false |If false then GitLab is selected as the Git server, otherwise GitHub is the Git server.
 3+|One of the two must be given, either the `auth.token` or the basic auth (`auth.username` & `auth.password`).
 Note that none of them must be protected, otherwise they cannot be read by the plugin.
 |auth.token |None |The private token to use for access to the GitLab API
