@@ -17,8 +17,12 @@
 package de.manuzid.staticcodereviewplugin.model
 
 data class GitConfiguration(
-    val gitUrl: String, val authentication: GitAuthenticationConfiguration,
-    val projectId: String, val mergeRequestIid: Long, val proxyConfiguration: ProxyConfiguration? = null
+    val gitUrl: String,
+    val authentication: GitAuthenticationConfiguration,
+    val projectId: String? = null,
+    val repository: String? = null,
+    val mergeRequestIid: Long,
+    val proxyConfiguration: ProxyConfiguration? = null
 )
 
 data class GitAuthenticationConfiguration(val token: String?, val username: String?, val password: String?)
