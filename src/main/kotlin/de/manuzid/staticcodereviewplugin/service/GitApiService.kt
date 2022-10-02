@@ -40,7 +40,7 @@ class GitLabApiServiceImpl(gitLabConfiguration: GitLabConfiguration) : GitApiSer
 
     private val gitLabApi: GitLabApi
     private val projectId: String = gitLabConfiguration.projectId
-    private val mergeRequestIid: Int = gitLabConfiguration.mergeRequestIid
+    private val mergeRequestIid: Long = gitLabConfiguration.mergeRequestIid
 
     init {
         gitLabApi = if (gitLabConfiguration.authentication.token.isNullOrBlank()) {
