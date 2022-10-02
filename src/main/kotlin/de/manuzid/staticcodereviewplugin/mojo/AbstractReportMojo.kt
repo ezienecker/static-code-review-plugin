@@ -21,6 +21,7 @@ import de.manuzid.staticcodereviewplugin.model.GitConfiguration
 import de.manuzid.staticcodereviewplugin.model.Issue
 import de.manuzid.staticcodereviewplugin.model.ProxyConfiguration
 import de.manuzid.staticcodereviewplugin.service.GitApiService
+import de.manuzid.staticcodereviewplugin.service.GitHubApiServiceImpl
 import de.manuzid.staticcodereviewplugin.service.GitLabApiServiceImpl
 import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.plugins.annotations.Parameter
@@ -28,11 +29,14 @@ import org.apache.maven.project.MavenProject
 
 abstract class AbstractReportMojo : AbstractMojo() {
 
-    @Parameter(property = "gitLabUrl", required = false)
-    protected lateinit var gitLabUrl: String
+    @Parameter(property = "gitUrl", required = false)
+    protected lateinit var gitUrl: String
 
     @Parameter(property = "projectId", required = false)
-    protected lateinit var projectId: String
+    protected var projectId: String? = null
+
+    @Parameter(property = "repository", required = false)
+    protected var repository: String? = null
 
     @Parameter(property = "mergeRequestIid", required = false)
     protected var mergeRequestIid: Long? = null
@@ -70,6 +74,9 @@ abstract class AbstractReportMojo : AbstractMojo() {
     @Parameter(property = "static-code-review.skip", defaultValue = "false")
     private var skip: Boolean = false
 
+    @Parameter(property = "isGitHub", defaultValue = "false")
+    private var isGitHub: Boolean = false
+
     override fun execute() {
         if (mergeRequestIid == null) {
             log.error("Merge Request ID must not be null.")
@@ -88,7 +95,7 @@ abstract class AbstractReportMojo : AbstractMojo() {
 
         log.info("Execute Static Code Review Plugin.")
 
-        val gitApiService = gitLabApiServiceImpl()
+        val gitApiService = getGitApiService(isGitHub)
         val affectedFilePaths = gitApiService.getAffectedFilePaths()
         val mergeRequestMetaData = gitApiService.getMergeRequestMetaData()
 
@@ -97,7 +104,14 @@ abstract class AbstractReportMojo : AbstractMojo() {
             return
         }
 
-        log.debug("Obtain following ${affectedFilePaths.size.bottles("path", "paths")} from remote: $affectedFilePaths.")
+        log.debug(
+            "Obtain following ${
+                affectedFilePaths.size.bottles(
+                    "path",
+                    "paths"
+                )
+            } from remote: $affectedFilePaths."
+        )
         log.info("Start analysing ${affectedFilePaths.size.bottles("file", "files")}.")
 
         val reportedIssues = getIssuesFromAnalyzer(affectedFilePaths)
@@ -115,13 +129,40 @@ abstract class AbstractReportMojo : AbstractMojo() {
 
     protected abstract fun getIssuesFromAnalyzer(affectedFilePaths: List<String>): List<Issue>
 
+    private fun getGitApiService(isGitHubActive: Boolean): GitApiService = if (isGitHubActive) {
+        log.debug("Static Code Plugin is configured for GitHub.")
+        if (repository.isNullOrEmpty()) {
+            throw IllegalArgumentException("Repository must not be null or empty.")
+        }
+        gitHubApiServiceImpl()
+    } else {
+        log.debug("Static Code Plugin is configured for GitLab.")
+        if (projectId.isNullOrEmpty()) {
+            throw IllegalArgumentException("Project ID must not be null or empty.")
+        }
+        gitLabApiServiceImpl()
+    }
+
     private fun gitLabApiServiceImpl(): GitApiService {
         val authConfiguration = GitAuthenticationConfiguration(authToken, authUsername, authPassword)
         val proxyConfiguration = ProxyConfiguration(proxyServerAddress, proxyUsername, proxyPassword)
-        val gitConfiguration = GitConfiguration(gitLabUrl, authConfiguration, projectId, mergeRequestIid!!,
-                proxyConfiguration)
+        val gitConfiguration = GitConfiguration(
+            gitUrl, authConfiguration, projectId, repository, mergeRequestIid!!,
+            proxyConfiguration
+        )
 
         return GitLabApiServiceImpl(gitConfiguration)
+    }
+
+    private fun gitHubApiServiceImpl(): GitApiService {
+        val authConfiguration = GitAuthenticationConfiguration(authToken, authUsername, authPassword)
+        val proxyConfiguration = ProxyConfiguration(proxyServerAddress, proxyUsername, proxyPassword)
+        val gitConfiguration = GitConfiguration(
+            gitUrl, authConfiguration, projectId, repository, mergeRequestIid!!,
+            proxyConfiguration
+        )
+
+        return GitHubApiServiceImpl(gitConfiguration)
     }
 
     private fun isAnalyzerActive(): Boolean = getAnalyzer() in exclusions

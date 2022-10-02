@@ -29,7 +29,7 @@ import java.util.*
 class GitLabApiServiceImpl(gitConfiguration: GitConfiguration) : GitApiService {
 
     private val gitLabApi: GitLabApi
-    private val projectId: String = gitConfiguration.projectId
+    private val projectId: String = gitConfiguration.projectId!!
     private val mergeRequestIid: Long = gitConfiguration.mergeRequestIid
 
     init {

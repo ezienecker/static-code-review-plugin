@@ -35,7 +35,7 @@ Execute the following command to run the plugin
 
 [source,bash]
 ....
-mvn verify -DgitLabUrl=https://gitlab.com/  \
+mvn verify -DgitUrl=https://gitlab.com/  \
     -DprojectId=$CI_PROJECT_ID  \
     -DmergeRequestIid=$CI_MERGE_REQUEST_IID  \
     -Dauth.token=$GITLAB_AUTH_TOKEN
@@ -77,7 +77,7 @@ To exclude analyzer use the `exclusion` tag
 |===
 |Property |Default |Description
 
-|gitLabUrl |None |The URL of the GitLab server
+|gitUrl |None |The URL of the GitLab server
 |projectId |None |The project in the form of an Integer(ID) or String(path)
 |mergeRequestIid |None |The internal ID of the merge request
 |static-code-review.skip |false |If true, execution will be skipped entirely.
@@ -120,7 +120,7 @@ To be able to check at runtime how the plugin is configured, you need to run the
 
 [source,bash]
 ....
-mvn verify -X -DgitLabUrl=https://gitlab.com/  \
+mvn verify -X -DgitUrl=https://gitlab.com/  \
     -DprojectId=$CI_PROJECT_ID  \
     -DmergeRequestIid=$CI_MERGE_REQUEST_IID  \
     -Dauth.token=$GITLAB_AUTH_TOKEN
@@ -136,7 +136,7 @@ you should see the following output.
 [DEBUG]   (f) authToken = <api-token>
 [DEBUG]   (f) compiledClassPath = classes
 [DEBUG]   (f) exclusions = [detekt]
-[DEBUG]   (f) gitLabUrl = https://gitlab.com/
+[DEBUG]   (f) gitUrl = https://gitlab.com/
 [DEBUG]   (f) mergeRequestIid = 1
 [DEBUG]   (f) project = MavenProject: de.manuzid:static-code-review-plugin-sample-kotlin:1.0.0 @ /Users/manuzid/public-projects/static-code-review-plugin-sample/static-code-review-plugin-sample-kotlin/pom.xml
 [DEBUG]   (f) projectId = 17068115
