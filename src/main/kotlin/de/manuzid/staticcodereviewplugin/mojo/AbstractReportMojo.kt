@@ -35,7 +35,7 @@ abstract class AbstractReportMojo : AbstractMojo() {
     protected lateinit var projectId: String
 
     @Parameter(property = "mergeRequestIid", required = false)
-    protected lateinit var mergeRequestIid: Integer
+    protected var mergeRequestIid: Long? = null
 
     @Parameter(property = "auth.token", required = false)
     protected var authToken: String? = null
@@ -71,6 +71,11 @@ abstract class AbstractReportMojo : AbstractMojo() {
     private var skip: Boolean = false
 
     override fun execute() {
+        if (mergeRequestIid == null) {
+            log.error("Merge Request ID must not be null.")
+            return
+        }
+
         if (skip) {
             log.info("Static Code Review has been skipped.")
             return
@@ -113,7 +118,7 @@ abstract class AbstractReportMojo : AbstractMojo() {
     private fun gitLabApiServiceImpl(): GitApiService {
         val authConfiguration = GitLabAuthenticationConfiguration(authToken, authUsername, authPassword)
         val proxyConfiguration = ProxyConfiguration(proxyServerAddress, proxyUsername, proxyPassword)
-        val gitLabConfiguration = GitLabConfiguration(gitLabUrl, authConfiguration, projectId, mergeRequestIid.toInt(),
+        val gitLabConfiguration = GitLabConfiguration(gitLabUrl, authConfiguration, projectId, mergeRequestIid!!,
                 proxyConfiguration)
 
         return GitLabApiServiceImpl(gitLabConfiguration)
